@@ -40,14 +40,8 @@
     </div>
   </header>
 
-  <!-- Hero & Welcome Banner -->
-  <section class="max-w-7xl mx-auto px-4 pt-8 pb-4 w-full">
-    <div id="user-greeting-card" class="bg-gradient-to-r from-indigo-600 to-violet-700 rounded-2xl p-6 sm:p-8 text-white shadow-lg mb-8">
-      <h1 id="greeting-text" class="text-2xl sm:text-3xl font-bold">Discover Your Next Look ✨</h1>
-      <p id="sub-greeting-text" class="text-indigo-100 mt-1">Trending picks from Myntra, Ajio & Amazon curated daily.</p>
-    </div>
-
-    <!-- Feed Filters -->
+  <!-- Feed Filters Section -->
+  <section class="max-w-7xl mx-auto px-4 pt-6 pb-2 w-full">
     <div class="flex items-center justify-between flex-wrap gap-4 border-b border-gray-200 pb-4">
       <div class="flex items-center gap-2">
         <button class="filter-chip active bg-indigo-600 text-white text-xs font-semibold px-4 py-2 rounded-full shadow-sm" data-filter="all">All Styles</button>
@@ -268,7 +262,6 @@
     const navUserSection = document.getElementById('nav-user-section');
     const userPill = document.getElementById('user-pill');
     const userDisplayName = document.getElementById('user-display-name');
-    const greetingText = document.getElementById('greeting-text');
     const emailAuthForm = document.getElementById('email-auth-form');
     const authError = document.getElementById('auth-error');
     const authModalTitle = document.getElementById('auth-modal-title');
@@ -353,7 +346,6 @@
 
         if (docSnap.exists()) {
           currentUserProfile = docSnap.data();
-          greetingText.innerText = `Welcome Back, ${currentUserProfile.name}! 👋`;
           userDisplayName.innerText = currentUserProfile.name;
           
           if (currentUserProfile.gender && currentUserProfile.gender !== 'All') {
@@ -399,7 +391,6 @@
 
         onboardingModal.classList.add('hidden');
         currentUserProfile = { name, age, gender };
-        greetingText.innerText = `Welcome to FitDrop, ${name}! ✨`;
         userDisplayName.innerText = name;
 
         if (gender !== 'All') {
@@ -464,7 +455,6 @@
         navUserSection.classList.remove('hidden');
         userPill.classList.add('hidden');
         userPill.classList.remove('flex');
-        greetingText.innerText = "Discover Your Next Look ✨";
       }
     });
 

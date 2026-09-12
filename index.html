@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitDrop | Personalized Fashion Drops</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col font-sans">
+
+  <!-- Navbar -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <span class="bg-indigo-600 text-white p-2 rounded-xl text-lg font-black tracking-wider">FD</span>
+        <span class="text-2xl font-black tracking-tight text-gray-900">Fit<span class="text-indigo-600">Drop</span></span>
+      </div>
+
+      <!-- Auth Action Section -->
+      <div id="nav-user-section" class="flex items-center space-x-3">
+        <button id="nav-login-btn" class="px-4 py-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700">Log In</button>
+        <button id="nav-signup-btn" class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg shadow hover:bg-indigo-700 transition">Sign Up</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero & Welcome Banner -->
+  <section class="max-w-7xl mx-auto px-4 pt-8 pb-4 w-full">
+    <div id="user-greeting-card" class="bg-gradient-to-r from-indigo-600 to-violet-700 rounded-2xl p-6 sm:p-8 text-white shadow-lg mb-8">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 id="greeting-text" class="text-2xl sm:text-3xl font-bold">Discover Your Next Look ✨</h1>
+          <p id="sub-greeting-text" class="text-indigo-100 mt-1">Trending picks from Myntra, Ajio & Amazon curated daily.</p>
+        </div>
+        <div id="user-pill" class="hidden items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20">
+          <i class="ph ph-user-circle text-2xl"></i>
+          <span id="user-display-name" class="font-medium text-sm">Guest</span>
+          <button id="logout-btn" class="ml-2 text-xs bg-white/20 hover:bg-white/30 px-2.5 py-1 rounded-full transition">Sign Out</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feed Filters -->
+    <div class="flex items-center justify-between flex-wrap gap-4 border-b border-gray-200 pb-4">
+      <div class="flex items-center gap-2">
+        <button class="filter-chip active bg-indigo-600 text-white text-xs font-semibold px-4 py-2 rounded-full shadow-sm" data-filter="all">All Styles</button>
+        <button class="filter-chip bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 text-xs font-semibold px-4 py-2 rounded-full transition" data-filter="Men">Men</button>
+        <button class="filter-chip bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 text-xs font-semibold px-4 py-2 rounded-full transition" data-filter="Women">Women</button>
+        <button class="filter-chip bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 text-xs font-semibold px-4 py-2 rounded-full transition" data-filter="Streetwear">Streetwear</button>
+      </div>
+      <span class="text-xs text-gray-400 font-medium tracking-wide uppercase">Verified Affiliate Drops</span>
+    </div>
+  </section>
+
+  <!-- Main Drops Feed -->
+  <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full">
+    <div id="outfit-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <!-- Cards dynamically generated via JS -->
+    </div>
+  </main>
+
+  <!-- Auth Modal (Sign In / Sign Up) -->
+  <div id="auth-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
+      <button id="close-auth-modal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+        <i class="ph ph-x text-2xl"></i>
+      </button>
+
+      <h2 id="auth-modal-title" class="text-2xl font-bold text-gray-900 mb-2">Welcome to FitDrop</h2>
+      <p class="text-sm text-gray-500 mb-6">Create an account or sign in to personalize your recommendations.</p>
+
+      <!-- Google Sign In -->
+      <button id="google-login-btn" class="w-full flex items-center justify-center gap-3 border border-gray-300 rounded-xl py-2.5 px-4 font-semibold text-gray-700 hover:bg-gray-50 transition shadow-sm mb-4">
+        <svg class="w-5 h-5" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+        </svg>
+        Continue with Google
+      </button>
+
+      <div class="flex items-center my-4">
+        <div class="flex-grow border-t border-gray-200"></div>
+        <span class="px-3 text-xs text-gray-400 font-semibold uppercase">Or with Email</span>
+        <div class="flex-grow border-t border-gray-200"></div>
+      </div>
+
+      <!-- Email Form -->
+      <form id="email-auth-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Email Address</label>
+          <input type="email" id="auth-email" required class="w-full px-3.5 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm" placeholder="name@domain.com">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Password</label>
+          <input type="password" id="auth-password" required class="w-full px-3.5 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm" placeholder="••••••••">
+        </div>
+        <p id="auth-error" class="text-xs text-rose-600 hidden"></p>
+        <button type="submit" id="auth-submit-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl shadow transition text-sm">
+          Sign In
+        </button>
+      </form>
+
+      <div class="mt-4 text-center">
+        <button id="toggle-auth-mode" class="text-xs text-indigo-600 hover:underline font-semibold">
+          Don't have an account? Sign up
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Onboarding Modal (Name, Age, Gender) -->
+  <div id="onboarding-modal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-md p-6 sm:p-8 shadow-2xl">
+      <div class="w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center mb-4 text-2xl">
+        <i class="ph ph-sparkle"></i>
+      </div>
+      <h2 class="text-2xl font-black text-gray-900 mb-1">Personalize Your Fit</h2>
+      <p class="text-sm text-gray-500 mb-6">Tell us a bit about you so FitDrop can prioritize outfits tailored to your style.</p>
+
+      <form id="onboarding-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Full Name</label>
+          <input type="text" id="ob-name" required class="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm" placeholder="Charan">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Age</label>
+          <input type="number" id="ob-age" min="12" max="100" required class="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm" placeholder="21">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Preferred Fashion Category</label>
+          <select id="ob-gender" required class="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm bg-white">
+            <option value="Men">Men's Fashion</option>
+            <option value="Women">Women's Fashion</option>
+            <option value="All">Unisex / All Styles</option>
+          </select>
+        </div>
+        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-lg transition text-sm mt-4">
+          Save & See My Recommendations
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Firebase Scripts & Main Business Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { 
+      getAuth, 
+      signInWithPopup, 
+      GoogleAuthProvider, 
+      createUserWithEmailAndPassword, 
+      signInWithEmailAndPassword, 
+      onAuthStateChanged, 
+      signOut 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { 
+      getFirestore, 
+      doc, 
+      setDoc, 
+      getDoc 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // Project Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBV156lp7Scg6RCNXR7Lf8QweNaDW0jrq8",
+      authDomain: "fitdrop-6fe73.firebaseapp.com",
+      projectId: "fitdrop-6fe73",
+      storageBucket: "fitdrop-6fe73.firebasestorage.app",
+      messagingSenderId: "185102607457",
+      appId: "1:185102607457:web:8396fcb87d24512c8ef620"
+    };
+
+    // Initialize Services
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const googleProvider = new GoogleAuthProvider();
+
+    // Sample Curated Drops with Affiliate Retailers
+    const DROPS = [
+      {
+        id: 1,
+        title: "Oversized Vintage Acid Wash Tee",
+        platform: "Ajio",
+        category: "Men",
+        tag: "Streetwear",
+        price: "₹899",
+        originalPrice: "₹1,999",
+        affiliateUrl: "https://www.ajio.com",
+        imageUrl: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        id: 2,
+        title: "Relaxed Fit Utility Cargo Trousers",
+        platform: "Myntra",
+        category: "Men",
+        tag: "Streetwear",
+        price: "₹1,499",
+        originalPrice: "₹2,799",
+        affiliateUrl: "https://www.myntra.com",
+        imageUrl: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        id: 3,
+        title: "Cropped Linen Blend Summer Shirt",
+        platform: "Myntra",
+        category: "Women",
+        tag: "Casual",
+        price: "₹1,199",
+        originalPrice: "₹2,299",
+        affiliateUrl: "https://www.myntra.com",
+        imageUrl: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        id: 4,
+        title: "Retro Monochrome Chunky Sneakers",
+        platform: "Amazon",
+        category: "Men",
+        tag: "Streetwear",
+        price: "₹2,199",
+        originalPrice: "₹4,999",
+        affiliateUrl: "https://www.amazon.in",
+        imageUrl: "https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        id: 5,
+        title: "Structured Minimalist Blazer",
+        platform: "Ajio",
+        category: "Women",
+        tag: "Formal",
+        price: "₹2,499",
+        originalPrice: "₹4,499",
+        affiliateUrl: "https://www.ajio.com",
+        imageUrl: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        id: 6,
+        title: "Heavyweight Boxy Graphic Hoodie",
+        platform: "Amazon",
+        category: "Men",
+        tag: "Streetwear",
+        price: "₹1,799",
+        originalPrice: "₹3,199",
+        affiliateUrl: "https://www.amazon.in",
+        imageUrl: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=700&q=80"
+      }
+    ];
+
+    // State
+    let currentUser = null;
+    let currentUserProfile = null;
+    let isSignUpMode = false;
+    let activeFilter = 'all';
+
+    // DOM Elements
+    const outfitGrid = document.getElementById('outfit-grid');
+    const authModal = document.getElementById('auth-modal');
+    const onboardingModal = document.getElementById('onboarding-modal');
+    const navUserSection = document.getElementById('nav-user-section');
+    const userPill = document.getElementById('user-pill');
+    const userDisplayName = document.getElementById('user-display-name');
+    const greetingText = document.getElementById('greeting-text');
+    const emailAuthForm = document.getElementById('email-auth-form');
+    const authError = document.getElementById('auth-error');
+    const authModalTitle = document.getElementById('auth-modal-title');
+    const authSubmitBtn = document.getElementById('auth-submit-btn');
+    const toggleAuthModeBtn = document.getElementById('toggle-auth-mode');
+
+    // Render Cards Function
+    function renderDrops(filterCategory = 'all') {
+      outfitGrid.innerHTML = '';
+      const itemsToDisplay = DROPS.filter(item => {
+        if (filterCategory === 'all') return true;
+        return item.category === filterCategory || item.tag === filterCategory;
+      });
+
+      if (itemsToDisplay.length === 0) {
+        outfitGrid.innerHTML = `<div class="col-span-full py-12 text-center text-gray-500">No outfits found in this category.</div>`;
+        return;
+      }
+
+      itemsToDisplay.forEach(item => {
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col group";
+        card.innerHTML = `
+          <div class="relative h-64 overflow-hidden bg-gray-100">
+            <img src="${item.imageUrl}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+            <span class="absolute top-3 left-3 bg-black/60 backdrop-blur-md text-white text-[11px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">${item.platform}</span>
+            <span class="absolute top-3 right-3 bg-white/90 text-indigo-700 text-xs font-bold px-2.5 py-1 rounded-md">${item.tag}</span>
+          </div>
+          <div class="p-4 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="font-bold text-gray-900 text-sm line-clamp-1 group-hover:text-indigo-600 transition">${item.title}</h3>
+              <div class="mt-2 flex items-baseline gap-2">
+                <span class="text-base font-extrabold text-gray-900">${item.price}</span>
+                <span class="text-xs text-gray-400 line-through">${item.originalPrice}</span>
+              </div>
+            </div>
+            <a href="${item.affiliateUrl}" target="_blank" rel="noopener noreferrer" class="mt-4 w-full bg-gray-900 group-hover:bg-indigo-600 text-white text-xs font-bold py-2.5 rounded-xl text-center transition flex items-center justify-center gap-1.5 shadow-sm">
+              <span>Buy on ${item.platform}</span>
+              <i class="ph ph-arrow-square-out text-sm"></i>
+            </a>
+          </div>
+        `;
+        outfitGrid.appendChild(card);
+      });
+    }
+
+    // Filter Chips Event Listeners
+    document.querySelectorAll('.filter-chip').forEach(button => {
+      button.addEventListener('click', (e) => {
+        document.querySelectorAll('.filter-chip').forEach(b => {
+          b.className = "filter-chip bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 text-xs font-semibold px-4 py-2 rounded-full transition";
+        });
+        e.target.className = "filter-chip active bg-indigo-600 text-white text-xs font-semibold px-4 py-2 rounded-full shadow-sm";
+        activeFilter = e.target.getAttribute('data-filter');
+        renderDrops(activeFilter);
+      });
+    });
+
+    // Modal Control Helpers
+    function openAuthModal(signup = false) {
+      isSignUpMode = signup;
+      authModalTitle.innerText = isSignUpMode ? "Join FitDrop" : "Welcome Back";
+      authSubmitBtn.innerText = isSignUpMode ? "Create Account" : "Sign In";
+      toggleAuthModeBtn.innerText = isSignUpMode ? "Already have an account? Log in" : "Don't have an account? Sign up";
+      authError.classList.add('hidden');
+      authModal.classList.remove('hidden');
+    }
+
+    document.getElementById('nav-login-btn').addEventListener('click', () => openAuthModal(false));
+    document.getElementById('nav-signup-btn').addEventListener('click', () => openAuthModal(true));
+    document.getElementById('close-auth-modal').addEventListener('click', () => authModal.classList.add('hidden'));
+
+    toggleAuthModeBtn.addEventListener('click', () => {
+      openAuthModal(!isSignUpMode);
+    });
+
+    // Check & Handle User Profile in Cloud Firestore
+    async function checkUserProfile(user) {
+      try {
+        const userDocRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(userDocRef);
+
+        if (docSnap.exists()) {
+          currentUserProfile = docSnap.data();
+          greetingText.innerText = `Welcome Back, ${currentUserProfile.name}! 👋`;
+          userDisplayName.innerText = currentUserProfile.name;
+          
+          // Auto-apply gender preference filter if set
+          if (currentUserProfile.gender && currentUserProfile.gender !== 'All') {
+            activeFilter = currentUserProfile.gender;
+            renderDrops(activeFilter);
+          }
+        } else {
+          // New User: Display Onboarding Modal
+          document.getElementById('ob-name').value = user.displayName || '';
+          onboardingModal.classList.remove('hidden');
+        }
+      } catch (err) {
+        console.error("Firestore retrieval error:", err);
+      }
+    }
+
+    // Onboarding Form Submit
+    document.getElementById('onboarding-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!currentUser) return;
+
+      const name = document.getElementById('ob-name').value.trim();
+      const age = document.getElementById('ob-age').value.trim();
+      const gender = document.getElementById('ob-gender').value;
+
+      try {
+        await setDoc(doc(db, "users", currentUser.uid), {
+          name: name,
+          age: parseInt(age),
+          gender: gender,
+          email: currentUser.email,
+          createdAt: new Date().toISOString()
+        });
+
+        onboardingModal.classList.add('hidden');
+        currentUserProfile = { name, age, gender };
+        greetingText.innerText = `Welcome to FitDrop, ${name}! ✨`;
+        userDisplayName.innerText = name;
+
+        if (gender !== 'All') {
+          renderDrops(gender);
+        }
+      } catch (err) {
+        console.error("Error saving onboarding details:", err);
+        alert("Failed to save profile: " + err.message);
+      }
+    });
+
+    // Google Sign In
+    document.getElementById('google-login-btn').addEventListener('click', async () => {
+      try {
+        authError.classList.add('hidden');
+        const res = await signInWithPopup(auth, googleProvider);
+        authModal.classList.add('hidden');
+        await checkUserProfile(res.user);
+      } catch (err) {
+        authError.innerText = err.message;
+        authError.classList.remove('hidden');
+      }
+    });
+
+    // Email / Password Form Submit
+    emailAuthForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('auth-email').value;
+      const pass = document.getElementById('auth-password').value;
+
+      try {
+        authError.classList.add('hidden');
+        let res;
+        if (isSignUpMode) {
+          res = await createUserWithEmailAndPassword(auth, email, pass);
+        } else {
+          res = await signInWithEmailAndPassword(auth, email, pass);
+        }
+        authModal.classList.add('hidden');
+        await checkUserProfile(res.user);
+      } catch (err) {
+        authError.innerText = err.message;
+        authError.classList.remove('hidden');
+      }
+    });
+
+    // Logout
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await signOut(auth);
+      location.reload();
+    });
+
+    // Firebase Auth Observer (Persistent Sessions)
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      if (user) {
+        navUserSection.classList.add('hidden');
+        userPill.classList.remove('hidden');
+        userPill.classList.add('flex');
+        await checkUserProfile(user);
+      } else {
+        navUserSection.classList.remove('hidden');
+        userPill.classList.add('hidden');
+        userPill.classList.remove('flex');
+        greetingText.innerText = "Discover Your Next Look ✨";
+      }
+    });
+
+    // Initial Load
+    renderDrops('all');
+  </script>
+</body>
+</html>

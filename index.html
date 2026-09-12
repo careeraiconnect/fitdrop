@@ -14,11 +14,11 @@
   <!-- Sticky Navbar -->
   <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
     <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-      <!-- Brand Logo -->
-      <div class="flex items-center space-x-2">
-        <span class="bg-indigo-600 text-white p-2 rounded-xl text-lg font-black tracking-wider">FD</span>
-        <span class="text-2xl font-black tracking-tight text-gray-900">Fit<span class="text-indigo-600">Drop</span></span>
-      </div>
+      <!-- Brand Logo (Clickable Home Link) -->
+      <a href="./" id="brand-logo" class="flex items-center space-x-2 cursor-pointer select-none group">
+        <span class="bg-indigo-600 group-hover:bg-indigo-700 text-white p-2 rounded-xl text-lg font-black tracking-wider transition">FD</span>
+        <span class="text-2xl font-black tracking-tight text-gray-900">Fit<span class="text-indigo-600 group-hover:text-indigo-700 transition">Drop</span></span>
+      </a>
 
       <!-- Top-Right Actions Area -->
       <div class="flex items-center space-x-3">
@@ -367,6 +367,7 @@
     let selectedBudget = 'all';
 
     // DOM References
+    const brandLogo = document.getElementById('brand-logo');
     const outfitGrid = document.getElementById('outfit-grid');
     const budgetFilter = document.getElementById('budget-filter');
     const dropsCounter = document.getElementById('drops-counter');
@@ -386,13 +387,9 @@
       outfitGrid.innerHTML = '';
 
       const filtered = DROPS.filter(item => {
-        // Gender match
         const matchesGender = (selectedGender === 'all') || (item.gender === selectedGender);
-
-        // Subcategory match (upper, lower, shoes, watches, full-outfit)
         const matchesCategory = (selectedCategory === 'all') || (item.type === selectedCategory);
 
-        // Budget match
         let matchesBudget = true;
         if (selectedBudget !== 'all') {
           matchesBudget = item.price <= parseInt(selectedBudget, 10);
@@ -411,16 +408,7 @@
             <button id="reset-filters" class="mt-3 text-xs text-indigo-600 font-bold hover:underline">Reset Filters</button>
           </div>
         `;
-        document.getElementById('reset-filters')?.addEventListener('click', () => {
-          selectedGender = 'all';
-          selectedCategory = 'all';
-          selectedBudget = 'all';
-          budgetFilter.value = 'all';
-
-          updateGenderUI('all');
-          updateCategoryUI('all');
-          renderFilteredDrops();
-        });
+        document.getElementById('reset-filters')?.addEventListener('click', resetAllFilters);
         return;
       }
 
@@ -455,6 +443,25 @@
         outfitGrid.appendChild(card);
       });
     }
+
+    // UI Reset Function
+    function resetAllFilters() {
+      selectedGender = 'all';
+      selectedCategory = 'all';
+      selectedBudget = 'all';
+      budgetFilter.value = 'all';
+
+      updateGenderUI('all');
+      updateCategoryUI('all');
+      renderFilteredDrops();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Logo Click -> Return to Default Home View
+    brandLogo.addEventListener('click', (e) => {
+      e.preventDefault();
+      resetAllFilters();
+    });
 
     // UI State Helpers
     function updateGenderUI(gender) {

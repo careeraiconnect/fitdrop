@@ -22,10 +22,16 @@
 
       <!-- Top-Right Actions Area -->
       <div class="flex items-center space-x-3">
+        <!-- Shopping Bag / Cart Button -->
+        <button id="cart-toggle-btn" class="relative p-2 text-gray-700 hover:text-indigo-600 hover:bg-gray-100 rounded-full transition">
+          <i class="ph ph-shopping-bag text-2xl"></i>
+          <span id="cart-badge" class="absolute top-1 right-1 bg-indigo-600 text-white text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+        </button>
+
         <!-- Guest State (Log In / Sign Up) -->
-        <div id="nav-user-section" class="flex items-center space-x-3">
-          <button id="nav-login-btn" class="px-4 py-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700">Log In</button>
-          <button id="nav-signup-btn" class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg shadow hover:bg-indigo-700 transition">Sign Up</button>
+        <div id="nav-user-section" class="flex items-center space-x-2">
+          <button id="nav-login-btn" class="px-3.5 py-1.5 text-xs font-bold text-indigo-600 hover:text-indigo-700">Log In</button>
+          <button id="nav-signup-btn" class="px-3.5 py-1.5 text-xs font-bold text-white bg-indigo-600 rounded-lg shadow hover:bg-indigo-700 transition">Sign Up</button>
         </div>
 
         <!-- Logged-in State (User Name + Sign Out) -->
@@ -42,7 +48,6 @@
 
   <!-- Filter & Controls Toolbar -->
   <section class="max-w-7xl mx-auto px-4 pt-6 pb-2 w-full space-y-4">
-    
     <!-- Row 1: Primary Section (Men / Women / All) + Budget Selector -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 pb-4">
       <div class="flex items-center gap-2">
@@ -64,12 +69,11 @@
             <option value="5000">Under ₹5,000</option>
           </select>
         </div>
-
         <span id="drops-counter" class="text-xs text-gray-400 font-semibold uppercase tracking-wider hidden sm:inline">Showing Drops</span>
       </div>
     </div>
 
-    <!-- Row 2: Sub-Category Pills (Upper, Lower, Shoes, Watches, Outfits) -->
+    <!-- Row 2: Sub-Category Pills -->
     <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2">
       <button class="cat-chip active bg-gray-900 text-white text-xs font-semibold px-4 py-1.5 rounded-full whitespace-nowrap shadow-sm" data-category="all">Everything</button>
       <button class="cat-chip bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 text-xs font-semibold px-4 py-1.5 rounded-full whitespace-nowrap transition" data-category="upper">Upper Wear</button>
@@ -78,7 +82,6 @@
       <button class="cat-chip bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 text-xs font-semibold px-4 py-1.5 rounded-full whitespace-nowrap transition" data-category="watches">Watches</button>
       <button class="cat-chip bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 text-xs font-semibold px-4 py-1.5 rounded-full whitespace-nowrap transition" data-category="full-outfit">🔥 Full Outfits</button>
     </div>
-
   </section>
 
   <!-- Main Drops Feed -->
@@ -87,6 +90,79 @@
       <!-- Injected via JS -->
     </div>
   </main>
+
+  <!-- Product Detail / Quick View Modal -->
+  <div id="product-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl relative flex flex-col md:flex-row max-h-[90vh]">
+      <button id="close-product-modal" class="absolute top-4 right-4 z-10 bg-white/80 backdrop-blur-md text-gray-700 hover:text-black p-2 rounded-full transition shadow-sm">
+        <i class="ph ph-x text-xl"></i>
+      </button>
+
+      <div class="md:w-1/2 h-64 md:h-auto bg-gray-100 relative overflow-hidden">
+        <img id="modal-product-img" src="" alt="Product Detail" class="w-full h-full object-cover">
+        <span id="modal-product-platform" class="absolute top-4 left-4 bg-black/70 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-md uppercase tracking-wider"></span>
+      </div>
+
+      <div class="p-6 md:p-8 md:w-1/2 flex flex-col justify-between overflow-y-auto">
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <span id="modal-product-tag" class="bg-indigo-50 text-indigo-700 text-xs font-bold px-2.5 py-1 rounded-md"></span>
+            <span id="modal-product-gender" class="text-xs font-bold text-gray-400 uppercase"></span>
+          </div>
+          <h2 id="modal-product-title" class="text-xl font-black text-gray-900 leading-tight"></h2>
+          
+          <div class="mt-4 flex items-baseline gap-3">
+            <span id="modal-product-price" class="text-2xl font-black text-gray-900"></span>
+            <span id="modal-product-original" class="text-sm text-gray-400 line-through"></span>
+          </div>
+
+          <p class="text-xs text-gray-500 mt-4 leading-relaxed">
+            Curated item verified for premium quality, cut, and affiliate store stock availability.
+          </p>
+        </div>
+
+        <div class="mt-8 space-y-3">
+          <button id="modal-add-to-cart-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-sm">
+            <i class="ph ph-shopping-bag text-lg"></i>
+            <span>Add to Bag</span>
+          </button>
+          <a id="modal-affiliate-link" href="#" target="_blank" rel="noopener noreferrer" class="w-full bg-gray-900 hover:bg-black text-white font-semibold py-3 rounded-xl transition flex items-center justify-center gap-2 text-sm">
+            <span>Buy Directly on Retailer</span>
+            <i class="ph ph-arrow-square-out text-base"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide-Over Shopping Cart Drawer -->
+  <div id="cart-drawer-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 hidden transition-opacity">
+    <div id="cart-drawer" class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+      <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+        <div class="p-6 border-b border-gray-200 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i class="ph ph-shopping-bag text-2xl text-indigo-600"></i>
+            <h2 class="text-lg font-bold text-gray-900">Your Saved Bag</h2>
+          </div>
+          <button id="close-cart-drawer" class="text-gray-400 hover:text-gray-600 text-2xl">
+            <i class="ph ph-x"></i>
+          </button>
+        </div>
+
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 space-y-4">
+          <!-- Dynamic Cart Items injected here -->
+        </div>
+
+        <div class="p-6 border-t border-gray-200 bg-gray-50">
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-sm font-semibold text-gray-600">Total Value:</span>
+            <span id="cart-total-price" class="text-lg font-black text-gray-900">₹0</span>
+          </div>
+          <button id="clear-cart-btn" class="w-full text-xs text-rose-600 hover:underline font-semibold text-center mb-2">Clear Bag</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Auth Modal -->
   <div id="auth-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
@@ -204,9 +280,8 @@
     const db = getFirestore(app);
     const googleProvider = new GoogleAuthProvider();
 
-    // Catalog with Gender, Category, Price, and Affiliate Store
+    // Catalog Data
     const DROPS = [
-      // Men Upper
       {
         id: 1,
         title: "Oversized Heavyweight Acid Wash Graphic Tee",
@@ -231,7 +306,6 @@
         affiliateUrl: "https://www.myntra.com",
         imageUrl: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=700&q=80"
       },
-      // Men Lower
       {
         id: 3,
         title: "Relaxed Fit 6-Pocket Utility Cargo Trousers",
@@ -256,7 +330,6 @@
         affiliateUrl: "https://www.ajio.com",
         imageUrl: "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=700&q=80"
       },
-      // Men Shoes
       {
         id: 5,
         title: "Retro High-Top Colorblock Sneakers",
@@ -281,7 +354,6 @@
         affiliateUrl: "https://www.ajio.com",
         imageUrl: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=700&q=80"
       },
-      // Watches (Unisex / Men)
       {
         id: 7,
         title: "Minimalist All-Black Matte Chronograph Watch",
@@ -306,7 +378,6 @@
         affiliateUrl: "https://www.amazon.in",
         imageUrl: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=700&q=80"
       },
-      // Men Full Outfits
       {
         id: 9,
         title: "Tokyo Streetwear Complete Look (Oversized Tee + Utility Cargos)",
@@ -319,7 +390,6 @@
         affiliateUrl: "https://www.myntra.com",
         imageUrl: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=700&q=80"
       },
-      // Women Section
       {
         id: 10,
         title: "Cropped Linen Blend Summer Casual Shirt",
@@ -358,13 +428,15 @@
       }
     ];
 
-    // State
+    // State Variables
     let currentUser = null;
     let currentUserProfile = null;
     let isSignUpMode = false;
     let selectedGender = 'all';
     let selectedCategory = 'all';
     let selectedBudget = 'all';
+    let activeModalItem = null;
+    let cart = [];
 
     // DOM References
     const brandLogo = document.getElementById('brand-logo');
@@ -382,7 +454,29 @@
     const authSubmitBtn = document.getElementById('auth-submit-btn');
     const toggleAuthModeBtn = document.getElementById('toggle-auth-mode');
 
-    // Filter Engine
+    // Product Modal Elements
+    const productModal = document.getElementById('product-modal');
+    const closeProductModal = document.getElementById('close-product-modal');
+    const modalProductImg = document.getElementById('modal-product-img');
+    const modalProductPlatform = document.getElementById('modal-product-platform');
+    const modalProductTag = document.getElementById('modal-product-tag');
+    const modalProductGender = document.getElementById('modal-product-gender');
+    const modalProductTitle = document.getElementById('modal-product-title');
+    const modalProductPrice = document.getElementById('modal-product-price');
+    const modalProductOriginal = document.getElementById('modal-product-original');
+    const modalProductLink = document.getElementById('modal-affiliate-link');
+    const modalAddToCartBtn = document.getElementById('modal-add-to-cart-btn');
+
+    // Cart Elements
+    const cartToggleBtn = document.getElementById('cart-toggle-btn');
+    const cartDrawerOverlay = document.getElementById('cart-drawer-overlay');
+    const closeCartDrawer = document.getElementById('close-cart-drawer');
+    const cartItemsContainer = document.getElementById('cart-items-container');
+    const cartBadge = document.getElementById('cart-badge');
+    const cartTotalPrice = document.getElementById('cart-total-price');
+    const clearCartBtn = document.getElementById('clear-cart-btn');
+
+    // Filter and Render
     function renderFilteredDrops() {
       outfitGrid.innerHTML = '';
 
@@ -414,15 +508,15 @@
 
       filtered.forEach(item => {
         const card = document.createElement('div');
-        card.className = "bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col group";
+        card.className = "bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col group cursor-pointer";
         card.innerHTML = `
-          <div class="relative h-64 overflow-hidden bg-gray-100">
+          <div class="relative h-64 overflow-hidden bg-gray-100 product-trigger">
             <img src="${item.imageUrl}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" loading="lazy">
             <span class="absolute top-3 left-3 bg-black/60 backdrop-blur-md text-white text-[11px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">${item.platform}</span>
             <span class="absolute top-3 right-3 bg-white/90 text-indigo-700 text-xs font-bold px-2.5 py-1 rounded-md">${item.tag}</span>
           </div>
           <div class="p-4 flex-1 flex flex-col justify-between">
-            <div>
+            <div class="product-trigger">
               <div class="flex items-center gap-1.5 text-xs text-gray-400 font-medium uppercase mb-1">
                 <span>${item.gender}</span>
                 <span>•</span>
@@ -434,17 +528,143 @@
                 <span class="text-xs text-gray-400 line-through">${item.originalPrice}</span>
               </div>
             </div>
-            <a href="${item.affiliateUrl}" target="_blank" rel="noopener noreferrer" class="mt-4 w-full bg-gray-900 group-hover:bg-indigo-600 text-white text-xs font-bold py-2.5 rounded-xl text-center transition flex items-center justify-center gap-1.5 shadow-sm">
-              <span>Buy on ${item.platform}</span>
-              <i class="ph ph-arrow-square-out text-sm"></i>
-            </a>
+            <div class="mt-4 flex items-center gap-2">
+              <button class="add-to-bag-direct flex-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 shadow-xs">
+                <i class="ph ph-shopping-bag text-sm"></i>
+                <span>Add to Bag</span>
+              </button>
+              <a href="${item.affiliateUrl}" target="_blank" rel="noopener noreferrer" class="p-2.5 bg-gray-900 hover:bg-black text-white rounded-xl transition flex items-center justify-center">
+                <i class="ph ph-arrow-square-out text-sm"></i>
+              </a>
+            </div>
           </div>
         `;
+
+        // Click image or title to open Quick View Modal
+        card.querySelectorAll('.product-trigger').forEach(el => {
+          el.addEventListener('click', () => openQuickView(item));
+        });
+
+        // Direct Add to Bag button
+        card.querySelector('.add-to-bag-direct').addEventListener('click', (e) => {
+          e.stopPropagation();
+          addToCart(item);
+        });
+
         outfitGrid.appendChild(card);
       });
     }
 
-    // UI Reset Function
+    // Quick View Modal
+    function openQuickView(item) {
+      activeModalItem = item;
+      modalProductImg.src = item.imageUrl;
+      modalProductPlatform.innerText = item.platform;
+      modalProductTag.innerText = item.tag;
+      modalProductGender.innerText = `${item.gender} • ${item.type.replace('-', ' ')}`;
+      modalProductTitle.innerText = item.title;
+      modalProductPrice.innerText = `₹${item.price.toLocaleString('en-IN')}`;
+      modalProductOriginal.innerText = item.originalPrice;
+      modalProductLink.href = item.affiliateUrl;
+      modalProductLink.querySelector('span').innerText = `Buy on ${item.platform}`;
+
+      productModal.classList.remove('hidden');
+    }
+
+    closeProductModal.addEventListener('click', () => productModal.classList.add('hidden'));
+
+    modalAddToCartBtn.addEventListener('click', () => {
+      if (activeModalItem) {
+        addToCart(activeModalItem);
+        productModal.classList.add('hidden');
+      }
+    });
+
+    // Cart / Bag Management
+    function addToCart(item) {
+      cart.push(item);
+      updateCartUI();
+      openCartDrawer();
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      // Counter Badge
+      if (cart.length > 0) {
+        cartBadge.innerText = cart.length;
+        cartBadge.classList.remove('hidden');
+      } else {
+        cartBadge.classList.add('hidden');
+      }
+
+      // Drawer Items
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = `
+          <div class="h-full flex flex-col items-center justify-center text-center py-12 text-gray-400">
+            <i class="ph ph-bag-simple text-5xl mb-2"></i>
+            <p class="text-sm font-semibold">Your bag is empty.</p>
+            <p class="text-xs text-gray-400 mt-1">Explore drops and save the ones you love!</p>
+          </div>
+        `;
+        cartTotalPrice.innerText = "₹0";
+        return;
+      }
+
+      cartItemsContainer.innerHTML = '';
+      let total = 0;
+
+      cart.forEach((item, index) => {
+        total += item.price;
+        const itemEl = document.createElement('div');
+        itemEl.className = "flex gap-4 items-center bg-gray-50 p-3 rounded-2xl border border-gray-100";
+        itemEl.innerHTML = `
+          <img src="${item.imageUrl}" alt="${item.title}" class="w-16 h-16 object-cover rounded-xl">
+          <div class="flex-1 min-w-0">
+            <h4 class="text-xs font-bold text-gray-900 truncate">${item.title}</h4>
+            <span class="text-xs text-gray-400 uppercase font-semibold">${item.platform}</span>
+            <div class="text-xs font-extrabold text-gray-900 mt-1">₹${item.price.toLocaleString('en-IN')}</div>
+          </div>
+          <div class="flex flex-col gap-2">
+            <a href="${item.affiliateUrl}" target="_blank" rel="noopener noreferrer" class="p-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition text-center" title="Buy Item">
+              <i class="ph ph-arrow-square-out text-xs"></i>
+            </a>
+            <button class="remove-cart-btn p-1.5 hover:bg-rose-100 text-gray-400 hover:text-rose-600 rounded-lg transition" title="Remove">
+              <i class="ph ph-trash text-xs"></i>
+            </button>
+          </div>
+        `;
+
+        itemEl.querySelector('.remove-cart-btn').addEventListener('click', () => removeFromCart(index));
+        cartItemsContainer.appendChild(itemEl);
+      });
+
+      cartTotalPrice.innerText = `₹${total.toLocaleString('en-IN')}`;
+    }
+
+    function openCartDrawer() {
+      cartDrawerOverlay.classList.remove('hidden');
+    }
+
+    function hideCartDrawer() {
+      cartDrawerOverlay.classList.add('hidden');
+    }
+
+    cartToggleBtn.addEventListener('click', openCartDrawer);
+    closeCartDrawer.addEventListener('click', hideCartDrawer);
+    cartDrawerOverlay.addEventListener('click', (e) => {
+      if (e.target === cartDrawerOverlay) hideCartDrawer();
+    });
+
+    clearCartBtn.addEventListener('click', () => {
+      cart = [];
+      updateCartUI();
+    });
+
+    // UI Reset
     function resetAllFilters() {
       selectedGender = 'all';
       selectedCategory = 'all';
@@ -457,13 +677,11 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Logo Click -> Return to Default Home View
     brandLogo.addEventListener('click', (e) => {
       e.preventDefault();
       resetAllFilters();
     });
 
-    // UI State Helpers
     function updateGenderUI(gender) {
       document.querySelectorAll('.gender-chip').forEach(btn => {
         if (btn.getAttribute('data-gender') === gender) {
@@ -484,7 +702,6 @@
       });
     }
 
-    // Event Listeners for Genders
     document.querySelectorAll('.gender-chip').forEach(btn => {
       btn.addEventListener('click', (e) => {
         selectedGender = e.currentTarget.getAttribute('data-gender');
@@ -493,7 +710,6 @@
       });
     });
 
-    // Event Listeners for Categories
     document.querySelectorAll('.cat-chip').forEach(btn => {
       btn.addEventListener('click', (e) => {
         selectedCategory = e.currentTarget.getAttribute('data-category');
@@ -502,7 +718,6 @@
       });
     });
 
-    // Budget Listener
     budgetFilter.addEventListener('change', (e) => {
       selectedBudget = e.target.value;
       renderFilteredDrops();
@@ -526,7 +741,7 @@
       openAuthModal(!isSignUpMode);
     });
 
-    // Check Profile in Firestore
+    // Firestore User Handling
     async function checkUserProfile(user) {
       try {
         const userDocRef = doc(db, "users", user.uid);
@@ -550,7 +765,6 @@
       }
     }
 
-    // Onboarding Form Submit
     document.getElementById('onboarding-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!currentUser) return;
@@ -596,7 +810,7 @@
       }
     });
 
-    // Email/Password Sign-In
+    // Email/Password
     emailAuthForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = document.getElementById('auth-email').value;
@@ -624,7 +838,7 @@
       location.reload();
     });
 
-    // Firebase Auth State Observer
+    // Auth Observer
     onAuthStateChanged(auth, async (user) => {
       currentUser = user;
       if (user) {
@@ -641,6 +855,7 @@
 
     // Initial render
     renderFilteredDrops();
+    updateCartUI();
   </script>
 </body>
 </html>
